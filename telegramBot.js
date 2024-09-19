@@ -1,5 +1,4 @@
-// const TelegramBot = require("node-telegram-bot-api");
-// const cron = require("node-cron");
+
 import TelegramBot from "node-telegram-bot-api";
 import cron from "node-cron";
 import { getDetails } from "./getDetails.js";
