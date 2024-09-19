@@ -1,6 +1,8 @@
 import puppeteer from "puppeteer";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat.js";
+import dotenv from 'dotenv';
+dotenv.config();
 dayjs.extend(customParseFormat);
 const parseDateToStandard = (dateStr) => {
   // Define possible date formats
@@ -29,7 +31,16 @@ console.log("@@## dateStr",dateStr)
 };
 
 const getDataFromSite = async (url,extractData,formatData)=>{
-  const browser = await puppeteer.launch({ headless: true }); 
+  const browser = await puppeteer.launch({ 
+    args:[
+      "disable-setuid-sandbox",
+      "--no-sandbox",
+      "single-process",
+      "no-zygote"
+    ],
+    executablePath: process.env.NODE_ENV === 'production' ? process.env.PUPPETEER_EXECUTABLE_PATH :
+    puppeteer.executablePath(),
+    headless: true }); 
   const page = await browser.newPage();
   await page.goto(url);
   const extractedData = await extractData(page)
